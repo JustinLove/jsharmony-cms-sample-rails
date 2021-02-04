@@ -1,0 +1,2 @@
+module RandomNumbersHelper
+end
