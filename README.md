@@ -7,11 +7,15 @@
     bundle install
     rails s
 
-### jsharmony-cms-sample
+### jsHarmony-CMS
+
+#### Installation
 
 Follow instructions at [https://github.com/apHarmony/jsharmony-cms-sample]
 
 Rename `views/templates/components` to xcomponents (or simply delete)
+
+#### Site Setup
 
 Log in and go to Sites. [https://localhost:8081]
 
@@ -62,6 +66,8 @@ Hit `Save` and change back to the `Overview` tab.
 
 Hit `Save` and close the site window.
 
+#### Adding Pages
+
 Select `Pages` from the top menu.
 
 You will actually be on the `Sitemap` subtab.  Choose `+ Add`, create new primary sitemap, and `Save`.
@@ -73,6 +79,8 @@ Right-click the `(Root)` item to add a child page, such as `About`.
 Choosing `Edit Page Content` Should show the page in the rails application template. Click on the title or body to edit, and `Save` when happy.
 
 You can build out the content as much as you like, but one page is sufficient to demonstrate the publishing and integration process.
+
+#### Publishing Content
 
 Got to `Publish` on the top menu, `Publish` subtab, and select `+ Schedule Deployment`
 
@@ -86,6 +94,8 @@ You can select `View log` to monitor the progress
 Your rails project should now have a `public/cms/about/index.html`, and it should be directly viewable at [http://localhost:3000/cms/about/index.html]
 
 We need one more step to have the cms control paths.
+
+#### CMS Redirects
 
 Go back to top level `Sites` tab, and edit your site.
 
@@ -120,3 +130,9 @@ Notice that `app/views/cms_components/redirects.html` is *not* an `.erb` file. T
 The redirects component allows the CMS to publish a `redirects.json` file, which is loaded by `/lib/middleware/cms_router_middleware.rb`. In this sample, the redirect file is loaded on every request for simplicity.
 
 `application.rb` loads the `CmsRouterMiddleware`. It is placed early in the chain so that it can redirect to static files and have the standard static file middleware take care of it.
+
+## Limitations and Points for extension
+
+- Redirects are re-loaded on every request. It could be done by checking less often, or simply restarting the app when new content is published.
+- Templates are captured at publish time; if the rails templates change you will need to republish. Alternately, it could be reworked so that the CMS publishes body content, and the cms router redirects pages to a rails controller that inserts the appropriate body into the current template.
+- Sample does not include many CMS features, such as menus, typical components, separate editor/publish templates, custom template attributes, etc.
