@@ -1,0 +1,8 @@
+<script type="text/cms-component-config">
+  {
+    "title": "JSON Redirects",
+    "target": "site",
+    "export": [{ "export_path": "config/redirects.json" }]
+  }
+</script>
+<%-JSON.stringify({site_redirects: branchData.site_redirects, page_redirects: branchData.page_redirects},null,2)%>
