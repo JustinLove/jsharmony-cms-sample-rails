@@ -10,4 +10,21 @@ header, footer {
   color: white;
   background-color: #24528f;
   padding: 1em;
+
+  & h2 {
+    display: inline-block;
+  }
+
+  & ul {
+    list-style-type: none;
+    display: inline-block;
+
+    & li {
+      display: inline-block;
+    }
+  }
+
+  & a {
+    color: white;
+  }
 }

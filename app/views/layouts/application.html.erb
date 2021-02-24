@@ -11,7 +11,12 @@
   </head>
 
   <body>
-    <header>Application Header</header>
+    <header>
+      <h2>Application Header</h2>
+      <ul>
+        <li><%= link_to "About", "/about/" %></li>
+      </ul>
+    </header>
     <main>
       <%= yield %>
     </main>

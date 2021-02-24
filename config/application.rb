@@ -21,6 +21,6 @@ module RailsJsh
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.middleware.insert_before ActionDispatch::Static, CmsRouterMiddleware, 'public/cms/test.json'
+    config.middleware.insert_before ActionDispatch::Static, CmsRouterMiddleware, 'public/cms/config/redirects.json'
   end
 end

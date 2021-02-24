@@ -23,6 +23,7 @@ Under `Deployment Targets` select `+ Add Deployment Target`
 - Enter a name such as `01 / Rails Public`
 - active status.
 - Enter the full url path where you want to publish files, e.g. `file://c:/wk/jsharmony-cms-sample-rails/rails_jsh/public/cms/`
+  - **IMPORTANT**: Do not use the `public` directory. The CMS manages all files below here, including deleteing files.
 - params is a json object of values that will be made available to template publishing. The key field is the base url.
 
     {
@@ -62,7 +63,7 @@ This will put you into sitemap edit mode. (You may choose `Sitemap Confing` to g
 
 Right-click the `(Root)` item to add a child page, such as `About`.
 
-Choosing `Edit Page Content` Should show the page in the rails application template. Click on the tile or body to edit, and `Save` when happy.
+Choosing `Edit Page Content` Should show the page in the rails application template. Click on the title or body to edit, and `Save` when happy.
 
 You can build out the content as much as you like, but one page is sufficient to demonstrate the publishing and integration process.
 
@@ -76,6 +77,18 @@ Got to `Publish` on the top menu, `Publish` subtab, and select `+ Schedule Deplo
 You can select `View log` to monitor the progress
 
 Your rails project should now have a `public/cms/about/index.html`, and it should be directly viewable at [http://localhost:3000/cms/about/index.html]
+
+We need one more step to have the cms control paths.
+
+Go back to top level `Sites` tab, and edit your site.
+
+Select the `Components` tab.
+
+`+ Add` a new REMOTE template. Call it something like `rails_redirects`. For URL, enter `%%%editor_base_url%%%/cms_components/redirects.html` and `Save`
+
+Close the site window and publish the site again. If configured correctly, you should see `public\cms\config\redirects.json` in the publish log. Once complete you should be able to go to [http://localhost:3000/about/] (without the /cms/)
+
+You can also manage arbitrary redirects under the `Pages`, `Redirects` menu. (Every change needs a publish to be visible on the rails site)
 
 ### jsHarmony
 
@@ -127,11 +140,21 @@ Select `Pages` on the top menu. On both `Home` and `Style Guide`,
 
 Added a token random_numbers controller and view.
 
-Added a cms_templates controller, and an basic_page view, with wildcard routing
+Added a cms_templates controller, and a basic_page view, with wildcard routing
 
 `get "/cms_templates/*template", to: "cms_templates#index"`
 
 See the view file for required contents. There is also a cms_templates_helper that has the cms javascript tag (which includes the url of the cms managment server)
+
+Added a cms_components controller, and a redirects.html view, with wildcard routing. This controller is nealry same as templates, but components have no layout applied.
+
+`get "/cms_components/*template", to: "cms_components#index"`
+
+Notice that `app/views/cms_components/redirects.html` is *not* an `.erb` file. The template tags here are interpreted as EJS by the CMS. If you also want to perform ERB processing, you will need to take care to escape any EJS tags.
+
+The redirects component allows the CMS to publish a `redirects.json` file, which is loaded by `/lib/middleware/cms_router_middleware.rb`. In this sample, the redirect file is loaded on every request for simplicity.
+
+`application.rb` loads the `CmsRouterMiddleware`. It is placed early in the chain so that it can redirect to static files and have the standard static file middleware take care of it.
 
 ### jsharmony-cms-sample setup
 
