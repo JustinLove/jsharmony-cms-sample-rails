@@ -1,12 +1,12 @@
 class CmsRouterMiddleware
   def initialize(app, redirect_file_path)
     @app = app
-    @redirect_file_path
+    @redirect_file_path = redirect_file_path
   end
 
   def call(env)
     path = Rack::Request.new(env).path
-    branch_data = JSON.parse(File.read('test/fixtures/files/redirects.json'))
+    branch_data = load_redirects
     branch_data['site_redirects'].each do |redir|
       return exec(path, redir, env) if match(path, redir)
     end
@@ -16,9 +16,16 @@ class CmsRouterMiddleware
     dest = branch_data['page_redirects'][path]
     return passthru(env, dest) if dest
     @app.call(env)
+  end
+
+  def load_redirects
+    branch_data = JSON.parse(File.read(@redirect_file_path))
   rescue => error
     report_error error
-    @app.call(env)
+    return {
+      'site_redirects' => [],
+      'page_redirects' => {},
+    }
   end
 
   def match(path, redir)

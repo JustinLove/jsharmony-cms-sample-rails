@@ -4,7 +4,6 @@
 
 ### Rails
 
-    cd rails_jsh
     bundle install
     rails s
 
@@ -12,7 +11,9 @@
 
 Follow instructions at [https://github.com/apHarmony/jsharmony-cms-sample]
 
-Log in and go to Sites.
+Rename `views/templates/components` to xcomponents (or simply delete)
+
+Log in and go to Sites. [https://localhost:8081]
 
 Select `+ Add Site`
 
@@ -22,30 +23,21 @@ Under `Deployment Targets` select `+ Add Deployment Target`
 
 - Enter a name such as `01 / Rails Public`
 - active status.
-- Enter the full url path where you want to publish files, e.g. `file://c:/wk/jsharmony-cms-sample-rails/rails_jsh/public/cms/`
+- Enter the full url path where you want to publish files, e.g. `file://c:/wk/jsharmony-cms-sample-rails/public/cms/`
   - **IMPORTANT**: Do not use the `public` directory. The CMS manages all files below here, including deleteing files.
 - params is a json object of values that will be made available to template publishing. The key field is the base url.
 
-    {
-      "env": "local",
-      "content_url": "/cms/",
-      "editor_base_url": "http://localhost:3000"
-    }
+```
+{
+  "env": "local",
+  "content_url": "/cms/",
+  "editor_base_url": "http://localhost:3000"
+}
+```
 
 Select `Save`
 
-Select `Permissions`. Choose `All Users` for both edit and publish. Select `Save`, and close the deployment targets window.
-
-Change to `Page Templates` tab and `+ Add` with
-
-`Basic Page`, `Basic Page`, `REMOTE`, `%%%editor_base_url%%%/cms_templates/basic_page.html`
-
-Hit `Save` and change back to the `Overview` tab.
-
-- Set `Default Page Template` to `Basic Page` 
-- Set `Default Preview/Editor` to `01 / Rails Public`
-
-Hit `Save` and close the site window.
+Select `Permissions`. Choose `All Users` for both edit and publish. Select `Save`, and close the deployment targets window, and then the site window.
 
 Select `Branches` on the top menu, and `+ New Empty Branch`
 
@@ -55,7 +47,22 @@ Select `Branches` on the top menu, and `+ New Empty Branch`
 
 jsHarmonyCMS supports a branch, review, merge, publish lifecycle, but we will be editing and publishing master here for brevity.
 
-Saving the new branch will cause you to checkout the new branch (you have exactly one active branch at any time) and change to the `Pages` tab.
+Saving the new branch will cause you to checkout the new branch (you have exactly one active branch at any time) and change to the `Pages` tab. But we need to setup the site defaults first (and we needed a branch in the site checked out to make the right option available)
+
+Select `Site` and edit your new site.
+
+Change to `Page Templates` tab and `+ Add` with
+
+`basic_page`, `Basic Page`, `REMOTE`, `%%%editor_base_url%%%/cms_templates/basic_page.html`
+
+Hit `Save` and change back to the `Overview` tab.
+
+- Set `Default Page Template` to `Basic Page` 
+- Set `Default Preview/Editor` to `01 / Rails Public`
+
+Hit `Save` and close the site window.
+
+Select `Pages` from the top menu.
 
 You will actually be on the `Sitemap` subtab.  Choose `+ Add`, create new primary sitemap, and `Save`.
 
@@ -90,49 +97,7 @@ Close the site window and publish the site again. If configured correctly, you s
 
 You can also manage arbitrary redirects under the `Pages`, `Redirects` menu. (Every change needs a publish to be visible on the rails site)
 
-### jsHarmony
-
-    cd jsharmony_rails
-    yarn install
-    node node_modules/jsharmony-factory/create.js
-
-Take note of initial login name and password.
-
-Start the server
-
-`./nstart.cmd`
-
-There will be many warnings, but we need to run the web interface to run the CMS setup scripts to fix them.
-Log in to the web interface (default [http://localhost:8080]) with the credentials from the create step.
-Navigate to Developer -> DB Script
-Under jsHarmonyCMS, run
-  - `init`
-  - `restructure`
-  - `init_data`
-  - `sample_data`
-
-You should now be able to quit the server and restart without errors.
-
-Navigate to Sites, select `Manage Site`. For `01 / Local FS` Select `Edit`
-
-  - change the Path setting to reflect the absolute path on your local filesystem.
-  - Check the params to ensure the address of the rails server is correct for how you are running it.
-
-Change to `Page Templates` tab and `+ Add` with
-
-`Basic Page`, `Basic Page`, `REMOTE`, `%%%base_url%%%/cms_templates/basic_page.html`
-
-Hit `Save`
-
-Select `Pages` on the top menu. On both `Home` and `Style Guide`,
-
-  - Select `Page Properties`
-  - Change Template to `Basic Page`
-  - Save properties
-
 ## Outline of How This Was Made
-
-### Rails setup
 
 (install rails and prereqs as needed)
 
@@ -155,67 +120,3 @@ Notice that `app/views/cms_components/redirects.html` is *not* an `.erb` file. T
 The redirects component allows the CMS to publish a `redirects.json` file, which is loaded by `/lib/middleware/cms_router_middleware.rb`. In this sample, the redirect file is loaded on every request for simplicity.
 
 `application.rb` loads the `CmsRouterMiddleware`. It is placed early in the chain so that it can redirect to static files and have the standard static file middleware take care of it.
-
-### jsharmony-cms-sample setup
-
-Follow instructions at [https://github.com/apHarmony/jsharmony-cms-sample]
-
-### jsHarmony-CMS setup
-
-(install jsharmony-cli from npm as needed)
-
-`jsharmony create factory`
-
-- SQLite
-- No Client Portal
-
-`yarn add jsharmony-cms`
-
-Edit `app.js`, replacing instances of factory with cms.
-
-`yarn add jsharmony-image-sharp`
-
-Edit `app.config.js` adding:
-
-`  jsh.Extensions.image = require('jsharmony-image-sharp');`
-
-Start the server
-
-`./nstart.cmd`
-
-There will be many warnings, but we need to run the web interface to run the CMS setup scripts to fix them.
-Log in to the web interface (default [http://localhost:8080]) with the credentials from the create step.
-Navigate to Developer -> DB Script
-Under jsHarmonyCMS, run
-  - `init`
-  - `restructure`
-  - `init_data`
-  - `sample_data`
-
-You should now be able to quit the server and restart without errors.
-
-Add models/sql/objects/deployment.json (see file)
-
-Create the files
-
-    /views/jsh_cms_editor.css.ext.ejs
-    /views/jsh_cms_editor.ext.ejs
-
-Since these are new files, restart the server if it was running.
-
-Navigate to Sites, select `Manage Site`. For `01 / Local FS` Select `Edit`
-
-Change to `Page Templates` tab and `+ Add` with
-
-`Basic Page`, `Basic Page`, `REMOTE`, `%%%base_url%%%/cms_templates/basic_page.html`
-
-Hit `Save`
-
-Select `Pages` on the top menu. On both `Home` and `Style Guide`,
-
-  - Select `Page Properties`
-  - Change Template to `Basic Page`
-  - Save properties
-
-
-? Can template be defined a similar manner to default deployment
