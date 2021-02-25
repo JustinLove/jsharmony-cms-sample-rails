@@ -14,6 +14,7 @@
 Follow instructions at [https://github.com/apHarmony/jsharmony-cms-sample]
 
 Rename `views/templates/components` to xcomponents (or simply delete)
+Rename `views/templates/pages` to xpages (or simply delete)
 
 #### Site Setup
 
@@ -107,6 +108,24 @@ Close the site window and publish the site again. If configured correctly, you s
 
 You can also manage arbitrary redirects under the `Pages`, `Redirects` menu. (Every change needs a publish to be visible on the rails site)
 
+#### Adding Media
+
+Select `Media` from the top menu. Choose `+ Add` and upload an image.
+
+Now Select `Pages` and edit your about page. Click into the body text area. Now you can select the image icon or the Insert->Image menu. Click the "window with up-arrow" icon to open the media browser and pick your image.
+
+Save the page and publish the site again to view the updated page from the application.
+
+#### Adding Components
+
+Go back to top level `Sites` tab, and edit your site.
+
+Select the `Components` tab.
+
+`+ Add` a new REMOTE template. Call it something like `googlemap`. For URL, enter `%%%editor_base_url%%%/cms_components/googlemap.html` and `Save`
+
+Now if you edit a page and click into the editor, the `Component` menu will have Google Map as an option. If you add the component, you will need to save, then select the placeholder in the editor and `Configure` the component. One quirk of this component is that map preview will appear in a new tab, but once published it will appear inline.
+
 ## Outline of How This Was Made
 
 (install rails and prereqs as needed)
@@ -127,12 +146,14 @@ Added a cms_components controller, and a redirects.html view, with wildcard rout
 
 Notice that `app/views/cms_components/redirects.html` is *not* an `.erb` file. The template tags here are interpreted as EJS by the CMS. If you also want to perform ERB processing, you will need to take care to escape any EJS tags.
 
+The `app/views/cms_components/googlemap.html.erb` is an `.erb`. It uses a non-ERB partial with the EJS content in order to avoid escaping each tag. It also uses a partial for the javascript in order to load and JSON-escape the contents.
+
 The redirects component allows the CMS to publish a `redirects.json` file, which is loaded by `/lib/middleware/cms_router_middleware.rb`. In this sample, the redirect file is loaded on every request for simplicity.
 
 `application.rb` loads the `CmsRouterMiddleware`. It is placed early in the chain so that it can redirect to static files and have the standard static file middleware take care of it.
 
 ## Limitations and Points for extension
 
-- Redirects are re-loaded on every request. It could be done by checking less often, or simply restarting the app when new content is published.
+- Redirects are re-loaded on every request. It could be done by checking less often, hooking up a filesystem watcher, or simply restarting the app when new content is published.
 - Templates are captured at publish time; if the rails templates change you will need to republish. Alternately, it could be reworked so that the CMS publishes body content, and the cms router redirects pages to a rails controller that inserts the appropriate body into the current template.
 - Sample does not include many CMS features, such as menus, typical components, separate editor/publish templates, custom template attributes, etc.
