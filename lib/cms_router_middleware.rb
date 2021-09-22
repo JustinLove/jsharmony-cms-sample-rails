@@ -6,15 +6,10 @@ class CmsRouterMiddleware
 
   def call(env)
     path = Rack::Request.new(env).path
-    branch_data = load_redirects
-    branch_data['site_redirects'].each do |redir|
+    load_redirects.each do |redir|
       return exec(path, redir, env) if match(path, redir)
     end
 
-    # Here we use the passthru - the middleware is placed before static file serving
-    # You could perhaps invoke a static file middleware directly or do it yourself
-    dest = branch_data['page_redirects'][path]
-    return passthru(env, dest) if dest
     @app.call(env)
   end
 
@@ -22,10 +17,7 @@ class CmsRouterMiddleware
     branch_data = JSON.parse(File.read(@redirect_file_path))
   rescue => error
     report_error error
-    return {
-      'site_redirects' => [],
-      'page_redirects' => {},
-    }
+    return []
   end
 
   def match(path, redir)
