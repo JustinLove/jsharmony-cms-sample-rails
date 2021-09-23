@@ -10,7 +10,7 @@ class CmsRouterMiddlewareTest < ActiveSupport::TestCase
   end
 
   def middleware
-    CmsRouterMiddleware.new(app, 'test/fixtures/files/redirects.json')
+    CmsRouterMiddleware.new(app, 'test/fixtures/files/jshcms_redirects.json')
   end
 
   def env_for(url, opts={})
@@ -85,19 +85,5 @@ class CmsRouterMiddlewareTest < ActiveSupport::TestCase
 
     assert_equal 302, code
     assert_equal '/regex/case/to/1', env['Location']
-  end
-
-  test "page redirects: file" do
-    code, env, body = middleware.call env_for('http://localhost/about/index.html')
-
-    assert_equal 200, code
-    assert_equal "/cms/about/index.html", body
-  end
-
-  test "page redirects: dir" do
-    code, env, body = middleware.call env_for('http://localhost/about/')
-
-    assert_equal 200, code
-    assert_equal "/cms/about/index.html", body
   end
 end
