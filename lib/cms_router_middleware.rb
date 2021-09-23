@@ -56,9 +56,9 @@ class CmsRouterMiddleware
   def dest_path(path, redir)
     case redir['redirect_url_type']
     when 'REGEX'
-      path.sub Regexp.new(redir['redirect_url']), redir['redirect_dest'].gsub(/\$(\d+)/, '\\\1')
+      path.sub Regexp.new(redir['redirect_url']), redir['redirect_dest']
     when 'REGEXICASE'
-      path.sub Regexp.new(redir['redirect_url'], true), redir['redirect_dest'].gsub(/\$(\d+)/, '\\\1')
+      path.sub Regexp.new(redir['redirect_url'], true), redir['redirect_dest']
     else
       redir['redirect_dest']
     end

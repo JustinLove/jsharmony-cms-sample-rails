@@ -1,0 +1,65 @@
+[
+  {
+    "redirect_key": 2,
+    "redirect_url": "/301",
+    "redirect_url_type": "EXACT",
+    "redirect_dest": "/random_numbers",
+    "redirect_http_code": "301"
+  },
+  {
+    "redirect_key": 3,
+    "redirect_url": "/302",
+    "redirect_url_type": "EXACT",
+    "redirect_dest": "/random_numbers",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 4,
+    "redirect_url": "/proxy",
+    "redirect_url_type": "EXACT",
+    "redirect_dest": "/random_numbers",
+    "redirect_http_code": "PASSTHRU"
+  },
+  {
+    "redirect_key": 13,
+    "redirect_url": "/begins",
+    "redirect_url_type": "BEGINS",
+    "redirect_dest": "/begins/with",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 14,
+    "redirect_url": "/BEGINS",
+    "redirect_url_type": "BEGINSICASE",
+    "redirect_dest": "/begins/with/case",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 17,
+    "redirect_url": "/exact",
+    "redirect_url_type": "EXACT",
+    "redirect_dest": "/exact/match",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 18,
+    "redirect_url": "/exact/case",
+    "redirect_url_type": "EXACTICASE",
+    "redirect_dest": "/exact/match/case",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 19,
+    "redirect_url": "/regex/(\\d+)",
+    "redirect_url_type": "REGEX",
+    "redirect_dest": "/regex/to/\\1",
+    "redirect_http_code": "302"
+  },
+  {
+    "redirect_key": 20,
+    "redirect_url": "/REGEX/(\\d+)",
+    "redirect_url_type": "REGEXICASE",
+    "redirect_dest": "/regex/case/to/\\1",
+    "redirect_http_code": "302"
+  }
+]
