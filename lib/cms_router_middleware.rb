@@ -14,7 +14,7 @@ class CmsRouterMiddleware
   end
 
   def load_redirects
-    branch_data = JSON.parse(File.read(@redirect_file_path))
+    JSON.parse(File.read(@redirect_file_path))
   rescue => error
     report_error error
     return []

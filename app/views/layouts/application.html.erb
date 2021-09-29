@@ -15,7 +15,7 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body <% if jsHarmonyCMS_is_in_editor? %>data-turbolinks="false"<% end %>>
+  <body <% if cms_is_in_editor? %>data-turbolinks="false"<% end %>>
     <header>
       <h2>Application Header</h2>
       <ul>
