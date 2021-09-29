@@ -1,9 +1,20 @@
+<% if page.seo.title.present? then content_for :title, page.seo.title end %>
+
 <% content_for :head do %>
   <%= jsHarmonyCMS_editor_tag %>
+  <% if page.seo.keywords.present? %><meta name="keywords" content="<%= page.seo.keywords %>" /><% end %>
+  <% if page.seo.metadesc.present? %><meta name="description" content="<%= page.seo.metadesc %>" /><% end %>
+  <% if page.seo.canonical_url.present? %><link rel="canonical" href="<%= page.seo.canonical_url %>" /><% end %>
+  <% if page.css.present? %><style type="text/css"><%= page.css.html_safe %></style><% end %>
+  <% if page.js.present? %><script type="text/javascript"><%= page.js.html_safe %></script><% end %>
+  <%= page.header.html_safe %>
 <% end %>
 
-<h1 cms-title><%= @page.title || 'Random Numbers' %></h1>
-<div cms-content-editor="page.content.before"><%= @page.content.before.html_safe %></div>
+<h1 cms-title><%= page.title || 'Random Numbers' %></h1>
+<div cms-content-editor="page.content.before"><%= page.content.before.html_safe %></div>
 <p>Your number is: <%= @number %></p>
-<div cms-content-editor="page.content.after"><%= @page.content.after.html_safe %></div>
+<div cms-content-editor="page.content.after"><%= page.content.after.html_safe %></div>
 
+<% content_for :footer do %>
+  <%= page.footer.html_safe %>
+<% end %>

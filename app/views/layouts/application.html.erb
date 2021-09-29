@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsJsh</title>
+    <% if content_for?(:title) %>
+      <title><%= yield :title %></title>
+    <% else %>
+      <title>RailsJsh</title>
+    <% end %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -21,6 +25,7 @@
     <main>
       <%= yield %>
     </main>
+    <%= yield :footer %>
     <footer>Application Footer</footer>
   </body>
 </html>
