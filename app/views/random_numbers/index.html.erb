@@ -1,2 +1,9 @@
-<h1>Random Numbers</h1>
+<% content_for :head do %>
+  <%= jsHarmonyCMS_editor_tag %>
+<% end %>
+
+<h1 cms-title><%= @page.title || 'Random Numbers' %></h1>
+<div cms-content-editor="page.content.before"><%= @page.content.before.html_safe %></div>
 <p>Your number is: <%= @number %></p>
+<div cms-content-editor="page.content.after"><%= @page.content.after.html_safe %></div>
+
