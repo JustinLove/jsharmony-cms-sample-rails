@@ -10,4 +10,8 @@ module CmsTemplatesHelper
   def jsHarmonyCMS_editor_tag
     jsHarmonyCMS_include_tag + "\n" + jsHarmonyCMS_start_tag
   end
+
+  def jsHarmonyCMS_is_in_editor?
+    params.member? :jshcms_token
+  end
 end

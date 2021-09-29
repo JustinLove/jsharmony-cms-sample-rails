@@ -117,6 +117,8 @@ Added a cms_templates controller, and a basic_page view, with wildcard routing
 
 See the view file for required contents. There is also a cms_templates_helper that has the cms javascript tags, and a stock cms javascript file `jsHarmonyCmsClient.min.js`. An access token needs to be configured to access the cms server for editor integration, see `config/application.rb`
 
+Notice the application layout body tag has a special exception for turbolinks. Turbolinks will interfere with CMS editor functions if not disabled in editing mode.
+
 Added a cms_components controller, with wildcard routing. This controller is nearly the same as templates, but components have no layout applied.
 
 `get "/cms_components/*template", to: "cms_components#index"`
