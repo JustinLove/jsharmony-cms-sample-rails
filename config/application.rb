@@ -22,10 +22,13 @@ module RailsJsh
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.x.jsHarmonyCMS.access_key = "c982cd413bf2a53bb082356c304472814a9af9b51a3de64e29079d941c092360554ae1bffa653eb8ac83a3459fc54806"
+    config.x.jsHarmonyCMS.cms_server_urls = ['https://localhost:8081/']
+    config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path = '/.jsHarmonyCms/jsHarmonyCmsEditor.js'
+
     config.middleware.insert_before ActionDispatch::Static, CmsRouterMiddleware, 'public/cms/jshcms_redirects.json'
-    config.middleware.insert_before ActionDispatch::Static, CmsClientjsMiddleware, '/.jsHarmonyCMS/jsHarmonyCmsEditor.js'
+    config.middleware.insert_before ActionDispatch::Static, CmsClientjsMiddleware, config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path
     config.middleware.insert_after ActionDispatch::Static, ActionDispatch::Static, 'public/cms'
 
-    config.x.jsHarmonyCMS.access_key = "c982cd413bf2a53bb082356c304472814a9af9b51a3de64e29079d941c092360554ae1bffa653eb8ac83a3459fc54806"
   end
 end

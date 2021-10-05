@@ -1,7 +1,7 @@
 <% if page.seo.title.present? then content_for :title, page.seo.title end %>
 
 <% content_for :head do %>
-    <%= jsHarmonyCMS_editor_tag %>
+  <%= jsHarmonyCMS_editor_tag %>
   <% if page.seo.keywords.present? %><meta name="keywords" content="<%= page.seo.keywords %>" /><% end %>
   <% if page.seo.metadesc.present? %><meta name="description" content="<%= page.seo.metadesc %>" /><% end %>
   <% if page.seo.canonical_url.present? %><link rel="canonical" href="<%= page.seo.canonical_url %>" /><% end %>

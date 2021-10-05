@@ -1,8 +1,11 @@
 module CmsTemplatesHelper
+  def jsHarmonyCMS_integration_tag
+    Scripting.remote_template_integration(Rails.configuration.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path, Rails.configuration.x.jsHarmonyCMS.access_key).html_safe
+  end
+
   def jsHarmonyCMS_editor_tag
-    %Q(<script type="text/javascript" class="removeOnPublish" src="/.jsHarmonyCMS/jsHarmonyCmsEditor.js"></script>
-    <script type="text/javascript" class="removeOnPublish">
-    jsHarmonyCmsEditor({"access_keys":["#{Rails.configuration.x.jsHarmonyCMS.access_key}"]});
-    </script>).html_safe
+    if cms_is_in_editor?
+      Scripting.editor_script(params[:jshcms_url], Rails.configuration.x.jsHarmonyCMS.cms_server_urls).html_safe
+    end
   end
 end
