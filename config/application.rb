@@ -23,6 +23,7 @@ module RailsJsh
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.x.jsHarmonyCMS.access_key = "c982cd413bf2a53bb082356c304472814a9af9b51a3de64e29079d941c092360554ae1bffa653eb8ac83a3459fc54806"
+    config.x.jsHarmonyCMS.content_path = 'public/cms'
     config.x.jsHarmonyCMS.cms_server_urls = ['https://localhost:8081/']
     config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path = '/.jsHarmonyCms/jsHarmonyCmsEditor.js'
 

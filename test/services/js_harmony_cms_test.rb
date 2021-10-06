@@ -2,7 +2,10 @@ require 'test_helper'
 
 class JsHarmonyCmsTest < ActiveSupport::TestCase
   def cms
-    JsHarmonyCms.new({:cms_server_urls => ['*']})
+    JsHarmonyCms.new({
+      :content_path => 'test/fixtures/files',
+      :cms_server_urls => ['*'],
+    })
   end
 
   def env_for(url, opts={})
@@ -45,5 +48,31 @@ class JsHarmonyCmsTest < ActiveSupport::TestCase
 
   test "server url security" do
     assert_equal '', JsHarmonyCms.new({:cms_server_urls => ['//elsewhere']}).get_editor_script(req_editor)
+  end
+
+  test "standalone: display, missing" do
+    page = cms.get_standalone('/not/found', req_display)
+
+    assert_equal '', page.editor_script
+  end
+
+  test "standalone: editor, missing" do
+    page = cms.get_standalone('/not/found', req_editor)
+
+    assert_not_equal '', page.editor_script
+  end
+
+  test "standalone: display, found" do
+    page = cms.get_standalone('/test.html', req_display)
+
+    assert_equal '', page.editor_script
+    assert_equal 'Random Numbers - with CMS content', page.title
+  end
+
+  test "standalone: editor, found" do
+    page = cms.get_standalone('/test.html', req_editor)
+
+    assert_not_equal '', page.editor_script
+    assert_equal '', page.title
   end
 end

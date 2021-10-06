@@ -30,6 +30,21 @@ class CmsPage
     data['title'] || ''
   end
 
+  def editor_script
+    ''
+  end
+
+  class EditorPage < CmsPage
+    def initialize(script = '')
+      @editor_script = script
+      super({})
+    end
+
+    def editor_script
+      @editor_script
+    end
+  end
+
   private
 
   attr_reader :data

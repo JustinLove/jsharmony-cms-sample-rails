@@ -2,12 +2,17 @@ class JsHarmonyCms
   attr_reader :config
 
   DefaultConfig = {
+    :content_path => '.',
     :cms_clientjs_editor_launcher_path => '/.jsHarmonyCms/jsHarmonyCmsEditor.js',
     :cms_server_urls => [],
   }
 
   def initialize(config = {})
     @config = DefaultConfig.merge config
+  end
+
+  def content_path
+    config[:content_path]
   end
 
   def cms_clientjs_editor_launcher_path
@@ -32,6 +37,22 @@ class JsHarmonyCms
     else
       ''
     end
+  end
+
+  def get_standalone(url, req)
+    if is_in_editor?(req)
+      CmsPage::EditorPage.new(get_editor_script(req))
+    else
+      path = content_path + url
+      if File.exist?(path)
+        CmsPage.new(JSON.parse(File.read(path)))
+      else
+        CmsPage.new({})
+      end
+    end
+  rescue => error
+    report_error(error)
+    CmsPage.new({})
   end
 
   def url_allowed?(cms_server_url)
@@ -66,5 +87,17 @@ class JsHarmonyCms
     pathA = a.path.empty? ? '/' : a.path
     pathB = b.path.empty? ? '/' : b.path
     pathA.starts_with?(pathB)
+  end
+
+  def report_error(error)
+    if Object.const_defined?('Rails')
+      if Rails.env.test?
+        p error
+      else
+        Rails.logger.error error
+      end
+    else
+      p error
+    end
   end
 end
