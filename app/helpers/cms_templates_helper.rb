@@ -5,7 +5,7 @@ module CmsTemplatesHelper
 
   def jsHarmonyCMS_editor_tag
     if cms_is_in_editor?
-      Scripting.editor_script(params[:jshcms_url], Rails.configuration.x.jsHarmonyCMS.cms_server_urls).html_safe
+      Scripting.editor_script(params[:jshcms_url]).html_safe
     end
   end
 end
