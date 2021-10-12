@@ -3,6 +3,7 @@ class JsHarmonyCms
 
   DefaultConfig = {
     :content_path => '.',
+    :page_loader => nil,
     :cms_clientjs_editor_launcher_path => '/.jsHarmonyCms/jsHarmonyCmsEditor.js',
     :cms_server_urls => [],
   }
@@ -13,6 +14,10 @@ class JsHarmonyCms
 
   def content_path
     config[:content_path]
+  end
+
+  def page_loader
+    @page_loader ||= config[:page_loader] || PageLoader.new(content_path)
   end
 
   def cms_clientjs_editor_launcher_path
@@ -39,20 +44,16 @@ class JsHarmonyCms
     end
   end
 
-  def get_standalone(url, req)
+  def get_page(url, req)
     if is_in_editor?(req)
       CmsPage::EditorPage.new(get_editor_script(req))
     else
-      path = content_path + url
-      if File.exist?(path)
-        CmsPage.new(JSON.parse(File.read(path)))
-      else
-        CmsPage.new({})
-      end
+      load_display_page(url)
     end
-  rescue => error
-    report_error(error)
-    CmsPage.new({})
+  end
+
+  def load_display_page(url)
+    page_loader.call(url)
   end
 
   def url_allowed?(cms_server_url)

@@ -50,27 +50,27 @@ class JsHarmonyCmsTest < ActiveSupport::TestCase
     assert_equal '', JsHarmonyCms.new({:cms_server_urls => ['//elsewhere']}).get_editor_script(req_editor)
   end
 
-  test "standalone: display, missing" do
-    page = cms.get_standalone('/not/found', req_display)
+  test "page: display, missing" do
+    page = cms.get_page('/not/found', req_display)
 
     assert_equal '', page.editor_script
   end
 
-  test "standalone: editor, missing" do
-    page = cms.get_standalone('/not/found', req_editor)
+  test "page: editor, missing" do
+    page = cms.get_page('/not/found', req_editor)
 
     assert_not_equal '', page.editor_script
   end
 
-  test "standalone: display, found" do
-    page = cms.get_standalone('/test.html', req_display)
+  test "page: display, found" do
+    page = cms.get_page('/test.html', req_display)
 
     assert_equal '', page.editor_script
     assert_equal 'Random Numbers - with CMS content', page.title
   end
 
-  test "standalone: editor, found" do
-    page = cms.get_standalone('/test.html', req_editor)
+  test "page: editor, found" do
+    page = cms.get_page('/test.html', req_editor)
 
     assert_not_equal '', page.editor_script
     assert_equal '', page.title
