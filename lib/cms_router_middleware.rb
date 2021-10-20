@@ -71,7 +71,8 @@ class CmsRouterMiddleware
   def passthru(env, url)
     # Continue with standard routing
     # You could perhaps check for fully qualified urls and load a remote file
-    @app.call(env.merge({'PATH_INFO' => url}))
+    uri = URI(url)
+    @app.call(env.merge({'PATH_INFO' => uri.path, 'QUERY_STRING' => uri.query}))
   end
 
   def report_error(error)

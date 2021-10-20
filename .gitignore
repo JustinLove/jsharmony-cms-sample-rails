@@ -35,6 +35,7 @@ public/assets
 /public/packs
 /public/packs-test
 /public/cms
+/public/testcases
 /node_modules
 yarn-error.log
 yarn-debug.log*

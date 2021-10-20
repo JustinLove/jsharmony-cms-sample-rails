@@ -6,12 +6,13 @@ main {
   margin: 1em;
 }
 
-header, footer {
+body header, body footer {
   color: white;
   background-color: #24528f;
   padding: 1em;
 
   & h2 {
+    color: white;
     display: inline-block;
   }
 

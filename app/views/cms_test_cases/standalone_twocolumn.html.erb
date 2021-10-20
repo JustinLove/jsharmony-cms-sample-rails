@@ -1,0 +1,61 @@
+<% if page.seo.title.present? then content_for :title, page.seo.title end %>
+
+<% content_for :head do %>
+  <% if cms_is_in_editor? %>
+    <script type="text/cms-page-config">
+      {
+        "properties": {
+          "fields": [
+            { "name": "showTitle", "caption": "Show Title", "control": "checkbox", "default": "Y", "controlparams": { "value_true": "Y", "value_false": "N" } },
+            { "name": "containerClass", "caption": "Container CSS Class" },
+            { "name": "containerStyle", "caption": "Container CSS Style" },
+            { "name": "sampleField", "caption": "Sample Field", "default": "defaultValue" }
+          ]
+        }
+      }
+    </script>
+
+    <%= page.editor_script.html_safe %>
+
+    <script cms-component="analytics" cms-component-remove-container="true" cms-component-content="page.content.analytics"><%= page.content.analytics.html_safe %></script>
+  <% else %>
+    <% if page.seo.keywords.present? %><meta name="keywords" content="<%= page.seo.keywords %>" /><% end %>
+    <% if page.seo.metadesc.present? %><meta name="description" content="<%= page.seo.metadesc %>" /><% end %>
+    <% if page.seo.canonical_url.present? %><link rel="canonical" href="<%= page.seo.canonical_url %>" /><% end %>
+    <% if page.css.present? %><style type="text/css"><%= page.css.html_safe %></style><% end %>
+    <% if page.js.present? %><script type="text/javascript"><%= page.js.html_safe %></script><% end %>
+    <%= page.header.html_safe %>
+
+    <%= page.content.analytics.html_safe %>
+  <% end %>
+
+<% end %>
+
+<% if cms_is_in_editor? %>
+  <div cms-component="topmenu" cms-menu-tag="mainmenu" cms-component-content="page.content.topmenu" cms-component-remove-container></div>
+<% else %>
+  <%= page.content.topmenu.html_safe %>
+<% end %>
+
+<% if page.properties.showTitle != 'N' %>
+  <h1 cms-title cms-onRender="showIf(page.properties.showTitle!='N');"><%= page.title || 'Standalone One Column' %></h1>
+<% end %>
+
+<div cms-component="breadcrumbs" cms-component-content="page.content.breadcrumbs"><%= page.content.breadcrumbs.html_safe %></div>
+
+<table width="100%" cms-onRender="addClass(page.properties.containerClass); addStyle(page.properties.containerStyle);" class="<%= page.properties.containerClass.html_safe %>" style="<%= page.properties.containerStyle.html_safe %>">
+  <tr>
+    <td valign="top" width="50%">
+        <h3>Column 1</h3>
+        <div cms-content-editor="page.content.col1"><%= page.content.col1.html_safe %></div>
+    </td>
+    <td valign="top">
+        <h3>Column 2</h3>
+        <div cms-content-editor="page.content.col2"><%= page.content.col2.html_safe %></div>
+    </td>
+  </tr>
+</table>
+
+<% content_for :footer do %>
+  <%= page.footer.html_safe %>
+<% end %>

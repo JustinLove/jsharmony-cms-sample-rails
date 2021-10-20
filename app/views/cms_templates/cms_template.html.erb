@@ -1,0 +1,47 @@
+<% content_for :head do %>
+  <%= jsHarmonyCMS_integration_tag %>
+
+  <script cms-component="analytics" cms-component-remove-container="true"></script>
+  <style type="text/css">.xbody.with_xhead { display:block; }</style>
+
+  <script type="text/cms-page-config">
+    {
+      "properties": {
+        "fields": [
+          { "name": "showTitle", "caption": "Show Title", "control": "checkbox", "default": "Y", "controlparams": { "value_true": "Y", "value_false": "N" } },
+          { "name": "containerClass", "caption": "Container CSS Class" },
+          { "name": "containerStyle", "caption": "Container CSS Style" },
+          { "name": "sampleField", "caption": "Sample Field", "default": "defaultValue" }
+        ]
+      }
+    }
+  </script>
+  <script type="text/cms-page-config" cms-template="two-column">
+    {
+      "content_elements": {
+        "col1": { "title": "Column 1" },
+        "col2": { "title": "Column 2" }
+      }
+    }
+  </script>
+
+<% end %>
+
+<div cms-component="topmenu" cms-menu-tag="mainmenu" cms-component-remove-container></div>
+<h1 cms-title cms-onRender="showIf(page.properties.showTitle!='N');">Page Title</h1>
+<div cms-component="breadcrumbs" ></div>
+
+<div cms-template="!two-column" cms-content-editor="page.content.body" cms-onRender="addClass(page.properties.containerClass); addStyle(page.properties.containerStyle);">Page Content</div>
+
+<table width="100%" cms-template="two-column">
+  <tr>
+    <td valign="top" width="50%">
+        <h3>Column 1</h3>
+        <div cms-content-editor="page.content.col1">Page Content #1</div>
+    </td>
+    <td valign="top">
+        <h3>Column 2</h3>
+        <div cms-content-editor="page.content.col2">Page Content #2</div>
+    </td>
+  </tr>
+</table>
