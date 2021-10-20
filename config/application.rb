@@ -6,8 +6,8 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require_relative "../lib/cms_router_middleware"
-require_relative "../lib/cms_clientjs_middleware"
+require "js_harmony_cms/middleware/router"
+require "js_harmony_cms/middleware/clientjs_server"
 
 module RailsJsh
   class Application < Rails::Application
@@ -38,8 +38,8 @@ module RailsJsh
       config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path = '/.jsHarmonyCms/jsHarmonyCmsEditor.js'
     end
 
-    config.middleware.insert_before ActionDispatch::Static, CmsRouterMiddleware, config.x.jsHarmonyCMS.content_path+'/jshcms_redirects.json'
-    config.middleware.insert_before ActionDispatch::Static, CmsClientjsMiddleware, config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path
+    config.middleware.insert_before ActionDispatch::Static, JsHarmonyCms::Middleware::Router, config.x.jsHarmonyCMS.content_path+'/jshcms_redirects.json'
+    config.middleware.insert_before ActionDispatch::Static, JsHarmonyCms::Middleware::ClientjsServer, config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path
     config.middleware.insert_after ActionDispatch::Static, ActionDispatch::Static, config.x.jsHarmonyCMS.content_path
 
   end
