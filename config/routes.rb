@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   get "/random_numbers", to: "random_numbers#index"
 
-  get "/cms_components/*template", to: "cms_components#index"
   get "/cms_templates/*template", to: "cms_templates#index"
 
   get "/login", to: "cms_test_cases#login"
