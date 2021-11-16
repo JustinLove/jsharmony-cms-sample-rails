@@ -30,7 +30,6 @@ module RailsJsh
 
     config.middleware.insert_before ActionDispatch::Static, JsHarmonyCms::Middleware::Router, config.x.jsHarmonyCMS.content_path+'/jshcms_redirects.json'
     config.middleware.insert_before ActionDispatch::Static, JsHarmonyCms::Middleware::ClientjsServer, config.x.jsHarmonyCMS.cms_clientjs_editor_launcher_path
-    config.middleware.insert_after ActionDispatch::Static, ActionDispatch::Static, config.x.jsHarmonyCMS.content_path
 
   end
 end

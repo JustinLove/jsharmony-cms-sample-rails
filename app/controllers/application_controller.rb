@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   end
 
   def page
-    @page ||= cms.get_page("/content/#{params[:controller]}/#{params[:action]}.html", request)
+    @page ||= cms.get_page("/#{params[:controller]}/#{params[:action]}.html", request)
   end
   helper_method :page
 
