@@ -1,6 +1,6 @@
 class CmsTestCasesController < ApplicationController
   def page
-    @page ||= cms.get_page("/#{params[:action]}/index.html", request)
+    @page ||= cms.get_page("/#{params[:action]}/index.html", params)
   end
   helper_method :page
 
